@@ -1,26 +1,192 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #03050b;
+  --panel: rgba(8, 14, 26, 0.86);
+  --line: rgba(120, 190, 255, 0.22);
+  --text: #dbe7f7;
+  --muted: #8b9bb3;
+  --green: #39d353;
+  --cyan: #56e0ff;
+  --amber: #ffc94d;
+  --danger: #ff5d84;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-line: var(--line);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-neon: var(--green);
+  --color-cyan: var(--cyan);
+  --color-amber: var(--amber);
+  --color-danger: var(--danger);
+  --font-display: var(--font-display), "Arial Black", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg);
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.6rem 1.4rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: rgba(86, 224, 255, 0.06);
+    color: var(--text);
+    font-family: var(--font-display), sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  }
+  .btn:hover:not(:disabled) {
+    background: rgba(86, 224, 255, 0.16);
+    border-color: var(--cyan);
+  }
+  .btn:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--green);
+    border-color: var(--green);
+    color: #04140a;
+    box-shadow: 0 0 24px rgba(57, 211, 83, 0.35);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: #5ff07b;
+    border-color: #5ff07b;
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  }
+  .display {
+    font-family: var(--font-display), sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .hud-text {
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(0, 0, 0, 0.9);
+  }
+  .kbd {
+    display: inline-block;
+    min-width: 1.6rem;
+    padding: 0.05rem 0.4rem;
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    font-size: 0.72rem;
+    text-align: center;
+  }
+}
+
+/* Game page: no scrolling, no text selection, no pull-to-refresh. */
+.game-root {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  background: var(--bg);
+}
+
+.safe-pad {
+  padding: max(0.75rem, env(safe-area-inset-top)) max(0.9rem, env(safe-area-inset-right))
+    max(0.75rem, env(safe-area-inset-bottom)) max(0.9rem, env(safe-area-inset-left));
+}
+
+@keyframes damage-flash {
+  0% { opacity: 0.55; }
+  100% { opacity: 0; }
+}
+.damage-flash {
+  animation: damage-flash 0.4s ease-out forwards;
+}
+
+@keyframes pop-in {
+  0% { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.pop-in {
+  animation: pop-in 0.22s ease-out both;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.pulse-soft {
+  animation: pulse-soft 1s ease-in-out infinite;
+}
+
+/* Landing page star layers (pure CSS, cheap). */
+@keyframes drift {
+  from { background-position: 0 0; }
+  to { background-position: 0 600px; }
+}
+.stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 140px 190px, rgba(190, 225, 255, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 260px 90px, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 90px 260px, rgba(160, 255, 200, 0.6), transparent),
+    radial-gradient(1px 1px at 210px 330px, rgba(255, 255, 255, 0.5), transparent);
+  background-size: 300px 400px;
+  animation: drift 60s linear infinite;
+  opacity: 0.7;
+}
+.stars.slow {
+  background-size: 520px 600px;
+  animation-duration: 140s;
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stars,
+  .pulse-soft,
+  .pop-in,
+  .damage-flash {
+    animation: none;
+  }
+  .damage-flash {
+    opacity: 0;
+  }
 }
