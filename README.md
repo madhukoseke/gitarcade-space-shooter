@@ -95,3 +95,8 @@ Any Node host that can run `pnpm build && pnpm start` also works. Details in [do
 Concept and contribution-mapping ideas come from [czl9707/gh-space-shooter](https://github.com/czl9707/gh-space-shooter) by Zane Chen (MIT), which renders a contribution graph as a GIF. The GraphQL query shape, the 0-4 level mapping, the week/weekday grid mapping and the column/row/random orderings were adapted to TypeScript; the interactive game is new. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [docs/CONTRIBUTION_MAPPING.md](docs/CONTRIBUTION_MAPPING.md).
 
 This is a fan project and is not affiliated with GitHub.
+
+## License
+
+GitArcade is licensed under the [MIT License](LICENSE). Third-party attributions
+and license details are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
