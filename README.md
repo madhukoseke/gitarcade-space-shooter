@@ -88,7 +88,6 @@ Any Node host that can run `pnpm build && pnpm start` also works. Details in [do
 - Sound effects are synthesised. There is no music.
 - One boss, no leaderboards, no accounts, no score verification. Results are local.
 - Rotating a phone mid-run keeps the arena chosen at launch and letterboxes it.
-- React Three Fiber logs a `THREE.Clock` deprecation warning with current Three.js; it comes from the library, not this code.
 
 ## Attribution
 
